@@ -1,0 +1,23 @@
+-The objective is to capture more stones than your opponent.
+-Initially, 
+ Each player sits opposite each other facing the long side of
+ the board. Set up by giving each player 24 stones. A player 
+ places four stones into each of the bins closest to them. 
+ The stores are placed at to the right of the board and 
+ remain empty of stones.
+ 
+- Decide who goes first with a coin flip or other method
+- If you pass over another player's store during your turn, 
+  you do not place a stone in their bin.
+- When dropping stones into bins, you can drop one into 
+  your own store. If it's your last stone in your hand, you 
+  get another turn.
+- If you go first, pick up the stones in the fourth bin away 
+  from your store. That way, you'll place the last stone in 
+  your store, and you'll get a free turn.
+- By dropping your last stone into an empty bin on your side, 
+  you're allowed to take your opponent's stones that are in 
+  the opposite bin and place them in your own store.
+- The game ends when one player has emptied the six bins on 
+  their side. The other player then takes all the stones on
+  their own side and places them into their store.
