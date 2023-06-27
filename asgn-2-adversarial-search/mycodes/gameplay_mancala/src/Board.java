@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
-public class Board {
+//max-player = '1'
+//min-player = '0'
+public class Board{
     int[] bins;
     Board(){
         bins = new int[14];
@@ -10,37 +12,42 @@ public class Board {
         }
     }
 
-    void printSpace(int k){     // print 'k' whitespaces in a single line
-        for(int i = 0; i < k; i++) System.out.print(" ");
+    int heuristic(){     //evaluation function / heuristic to determine the next state for optimal gameplay
+        return (bins[13]-bins[6]);  //'1' will try to maximize this heuristic, and '0' will try to minimize it
+    }
+
+    void printSpace(int k){     // print 'k' tabs in a single line
+        for(int i = 0; i < k; i++) System.out.print("\t");
     }
 
     void showBoard(){
-        System.out.print("\n-----------------------------------\n");
-        printSpace(2);
+        System.out.print("--------------------------------------------------------------------------------\n");
+        printSpace(1);
         for(int i = 12; i >= 7; i--){
             System.out.print("< " + i + " : " + bins[i] + " >");
-            printSpace(2);
+            printSpace(1);
         }
 
         System.out.print("\n< 13 : " + bins[13] + " >");
-        printSpace(53);
+        printSpace(15);
         System.out.print("< 6 : " + bins[6] + " >\n");
 
-        printSpace(2);
+        printSpace(1);
         for(int i = 0; i <= 5; i++){
             System.out.print("< " + i + " : " + bins[i] + " >");
-            printSpace(2);
+            printSpace(1);
         }
-        System.out.print("\n-----------------------------------\n");
+        System.out.print("\n--------------------------------------------------------------------------------\n");
     }
 
     //play the game
     void play(){
         showBoard();  //initially
 
-        System.out.print("Select player-type {'0', '1'}: ");
+        System.out.print("Select player-type {0, 1}: ");
         int playerType = new Scanner(System.in).nextInt();
-        System.out.print("Select bin no. {'0':[0,5], '1':[7,12]}: ");
+        if(playerType==0)   System.out.print("<" + playerType + ">: Select bin no. [0,5]: ");
+        else if(playerType==1)   System.out.print("<" + playerType + ">: Select bin no. [7,12]: ");
         int k = new Scanner(System.in).nextInt();
         boolean result = moveStones(playerType, k);
         showBoard();    //after 1st move
@@ -51,7 +58,8 @@ public class Board {
                 break;
             }
             if(!result) playerType = 1 - playerType;
-            System.out.print("< " + playerType + " >: Select bin no. {'0':[0,5] , '1':[7,12]}: ");
+            if(playerType==0)   System.out.print("<" + playerType + ">: Select bin no. [0,5]: ");
+            else if(playerType==1)   System.out.print("<" + playerType + ">: Select bin no. [7,12]: ");
             k = new Scanner(System.in).nextInt();
             result = moveStones(playerType, k);
             showBoard();    //after subsequent moves
