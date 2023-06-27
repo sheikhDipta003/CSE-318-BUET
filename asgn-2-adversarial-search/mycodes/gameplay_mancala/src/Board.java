@@ -12,8 +12,15 @@ public class Board{
         }
     }
 
-    int heuristic(){     //evaluation function / heuristic to determine the next state for optimal gameplay
-        return (bins[13]-bins[6]);  //'1' will try to maximize this heuristic, and '0' will try to minimize it
+    //evaluation function / heuristic to determine the 'goodness' of the next state for optimal gameplay
+    //'1' will try to maximize this heuristic, and '0' will try to minimize it
+    int heuristic(){
+        //return (bins[13]-bins[6]);
+        //W1 * (stones_in_my_store – stones_in_opponents_store) + W2 * (stones_on_my_bins – stones_on_opponents_bins)
+        int x=0, y=0;
+        for(int i = 0; i < 6; i++) x += bins[i];    //total #stones on 0's bins
+        for(int i = 7; i < 12; i++) y += bins[i];   //total #stones on 1's bins
+        return 10 * (bins[13]-bins[6]) + (-10) * (y-x);
     }
 
     void printSpace(int k){     // print 'k' tabs in a single line
@@ -21,7 +28,7 @@ public class Board{
     }
 
     void showBoard(){
-        System.out.print("--------------------------------------------------------------------------------\n");
+        System.out.print("\n--------------------------------------------------------------------------------\n");
         printSpace(1);
         for(int i = 12; i >= 7; i--){
             System.out.print("< " + i + " : " + bins[i] + " >");
