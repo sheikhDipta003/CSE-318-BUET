@@ -1,12 +1,14 @@
 
 public class Main {
+    static int maxDepth=50;
+
     public static void main(String[] args) {
 //        Board bd = new Board();
 //        bd.play();
 
         //Min-max algorithm without alpha-beta pruning
         Board current= new Board();
-        int playerType=0, k, maxDepth=50;      //maximum #levels to traverse until the game is over
+        int playerType=0, k;      //maximum #levels to traverse until the game is over
 
         current.showBoard();
 
@@ -46,13 +48,15 @@ public class Main {
                 }
             }
 
-            //update 'current' and swap 'playerType' if necessary
+            //update 'current'
             current = arr[k];
 
             //print the current state of the board
             current.printSpace(9);
             System.out.print("player - " + playerType + ", selected bin - " + ((playerType==0)?k:(k+7)) + "\n");
             current.showBoard();
+
+            //swap 'playerType' if this player doesn't get their turn again
             if(!b[k]) playerType = 1 - playerType;
 
             //one level traversed

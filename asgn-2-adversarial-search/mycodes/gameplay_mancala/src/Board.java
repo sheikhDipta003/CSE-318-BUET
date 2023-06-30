@@ -4,12 +4,17 @@ import java.util.Scanner;
 //min-player = '0'
 public class Board{
     int[] bins;
+    int alpha;
+    int beta;
+
     Board(){
         bins = new int[14];
         for(int i = 0; i < bins.length; i++) {
             if (i != 6 && i != 13) bins[i] = 4;
             else bins[i] = 0;
         }
+        alpha = Integer.MIN_VALUE;
+        beta = Integer.MAX_VALUE;
     }
 
     //evaluation function / heuristic to determine the 'goodness' of the next state for optimal gameplay
