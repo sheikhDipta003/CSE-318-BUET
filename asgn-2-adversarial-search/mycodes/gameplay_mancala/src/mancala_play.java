@@ -7,7 +7,7 @@ public class mancala_play {
     static final int MAX_DEPTH = 6;
 
     boolean exitGame = false;
-    boolean AIvsAI = false;
+    boolean AIvsAI = true;
     int[] board;
     int currentPlayer;
     int additional_moves;
@@ -57,31 +57,31 @@ public class mancala_play {
             }
 
             //human vs AI
-            if (currentPlayer == 0) {
-                System.out.println("Your turn");
-                System.out.print("Enter bin no. (1-6) [Enter 0 to exit game]: ");
-                int bin = new Scanner(System.in).nextInt();
-
-                if(bin == 0) exitGame = true;
-
-                if (isValidMove(bin-1)) {
-                    moveStones(bin-1);
-                } else {
-                    if(bin != 0)    System.out.println("Invalid bin no.");
-                    //show error message only if the human player doesn't exit the game
-                }
-            } else {
-                System.out.println("AI's turn");
-                int i = getOptimalMove();
-                moveStones(i);
-                System.out.println("Selected bin - " + (i+1));
-            }
+//            if (currentPlayer == 0) {
+//                System.out.println("Your turn");
+//                System.out.print("Enter bin no. (1-6) [Enter 0 to exit game]: ");
+//                int bin = new Scanner(System.in).nextInt();
+//
+//                if(bin == 0) exitGame = true;
+//
+//                if (isValidMove(bin-1)) {
+//                    moveStones(bin-1);
+//                } else {
+//                    if(bin != 0)    System.out.println("Invalid bin no.");
+//                    //show error message only if the human player doesn't exit the game
+//                }
+//            } else {
+//                System.out.println("AI's turn");
+//                int i = getOptimalMove();
+//                moveStones(i);
+//                System.out.println("Selected bin - " + (i+1));
+//            }
 
             //AI vs AI
-//            System.out.println("AI-" + currentPlayer + "'s turn");
-//            int i = getOptimalMove();
-//            moveStones(i);
-//            System.out.println("Selected bin - " + (i+1));
+            System.out.println("AI-" + currentPlayer + "'s turn");
+            int i = getOptimalMove();
+            moveStones(i);
+            System.out.println("Selected bin - " + (i+1));
         }
     }
 
@@ -283,13 +283,13 @@ public class mancala_play {
     }
 
     int heuristic() {
-        return board[MANCALA_1] - board[MANCALA_0];
+//        return board[MANCALA_1] - board[MANCALA_0];
 
         //W1 * (stones_in_my_store – stones_in_opponents_store) + W2 * (stones_on_my_bins – stones_on_opponents_bins)
-//        int x=0, y=0;
-//        for(int i = 0; i < 6; i++) x += board[i];    //total #stones on 1's bins
-//        for(int i = 7; i < 12; i++) y += board[i];   //total #stones on 2's bins
-//        return 25 * (board[13]-board[6]) +  2 * (y-x);
+        int x=0, y=0;
+        for(int i = 0; i < 6; i++) x += board[i];    //total #stones on 1's bins
+        for(int i = 7; i < 12; i++) y += board[i];   //total #stones on 2's bins
+        return 25 * (board[13]-board[6]) +  2 * (y-x);
 
         //W1 * (stones_in_my_storage – stones_in_opponents_storage) + W2 * (stones_on_my_side –
         // stones_on_opponents_side) + W3 * (additional_move_earned)
