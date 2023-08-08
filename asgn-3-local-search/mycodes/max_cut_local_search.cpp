@@ -20,18 +20,8 @@ int calculateCut(const vector<vector<int>>& graph, const vector<int>& partition)
     return cutValue;
 }
 
-// Function to generate a random initial partition
-vector<int> generateRandomPartition(size_t N) {
-    vector<int> partition(N, 0);
-    for (size_t i = 0; i < N / 2; i++) {
-        partition[i] = 1;
-    }
-    random_shuffle(partition.begin(), partition.end());
-    return partition;
-}
-
-// Greedy randomized construction of initial solution
-vector<int> greedyRandomizedConstruction(const vector<vector<int>>& graph, double alpha) {
+// Semi-greedy randomized construction of initial solution
+vector<int> semi_greedy_construction(const vector<vector<int>>& graph, double alpha) {
     size_t N = graph.size();
     vector<int> currentPartition(N, 0);
     vector<int> rem_vertices(N);
@@ -45,8 +35,8 @@ vector<int> greedyRandomizedConstruction(const vector<vector<int>>& graph, doubl
 
     while (rem_count > 0) {
         // Greedily select the next vertex to include in the current set
-        int v = -1;             // the vertex with maximum degree
-        int w = INT_MIN;        // value of the maximum degree
+        int v = -1;             // the vertex with maximum weight
+        int w = INT_MIN;        // value of the maximum weight
 
         for (size_t i = 0; i < rem_count; i++) {
             int u = rem_vertices[i];
@@ -90,7 +80,7 @@ vector<int> greedyRandomizedConstruction(const vector<vector<int>>& graph, doubl
 }
 
 // Local search algorithm to find a Max-Cut solution
-vector<int> localSearchMaxCut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter_count) {
+vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter_count) {
     size_t N = graph.size();
     vector<int> currentPartition = initialPartition;
     int currentCut = calculateCut(graph, currentPartition);
@@ -113,13 +103,13 @@ vector<int> localSearchMaxCut(const vector<vector<int>>& graph, vector<int> init
 }
 
 // GRASP with local search algorithm to find a Max-Cut solution
-vector<int> graspMaxCut(const vector<vector<int>>& graph, double alpha, int max_iter_grasp, int max_iter_local) {
+vector<int> grasp_max_cut(const vector<vector<int>>& graph, double alpha, int max_iter_grasp, int max_iter_local) {
     vector<int> bestSolution;
     int bestCutValue = INT_MIN;
 
     for (int i = 0; i < max_iter_grasp; i++) {
-        vector<int> currentSolution = greedyRandomizedConstruction(graph, alpha);
-        vector<int> improvedSolution = localSearchMaxCut(graph, currentSolution, max_iter_local); // Use local search for improvement
+        vector<int> currentSolution = semi_greedy_construction(graph, alpha);
+        vector<int> improvedSolution = local_search_max_cut(graph, currentSolution, max_iter_local); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
 
         if (currentCutValue > bestCutValue) {
@@ -132,6 +122,8 @@ vector<int> graspMaxCut(const vector<vector<int>>& graph, double alpha, int max_
 }
 
 int main() {
+    freopen("output.txt", "w", stdout);
+    
     srand(static_cast<unsigned>(time(0))); // Seed the random number generator
 
     // Sample graph represented using an adjacency matrix
@@ -147,7 +139,7 @@ int main() {
     double alpha = 0.3; // GRASP parameter (0 <= alpha <= 1)
     int max_iter_grasp = 10; // Number of GRASP iterations
     int max_iter_local = 1000; // Number of iterations for local search
-    vector<int> maxCutPartition = graspMaxCut(graph, alpha, max_iter_grasp, max_iter_local);
+    vector<int> maxCutPartition = grasp_max_cut(graph, alpha, max_iter_grasp, max_iter_local);
 
     // Output the results
     cout << "Max-Cut Partition: ";
