@@ -7,7 +7,7 @@ public class mancala_play {
     static final int MAX_DEPTH = 6;
 
     boolean exitGame = false;
-    boolean AIvsAI = true;
+    boolean AIvsAI = false;
     int[] board;
     int currentPlayer;
     int additional_moves;
@@ -57,31 +57,34 @@ public class mancala_play {
             }
 
             //human vs AI
-//            if (currentPlayer == 0) {
-//                System.out.println("Your turn");
-//                System.out.print("Enter bin no. (1-6) [Enter 0 to exit game]: ");
-//                int bin = new Scanner(System.in).nextInt();
-//
-//                if(bin == 0) exitGame = true;
-//
-//                if (isValidMove(bin-1)) {
-//                    moveStones(bin-1);
-//                } else {
-//                    if(bin != 0)    System.out.println("Invalid bin no.");
-//                    //show error message only if the human player doesn't exit the game
-//                }
-//            } else {
-//                System.out.println("AI's turn");
-//                int i = getOptimalMove();
-//                moveStones(i);
-//                System.out.println("Selected bin - " + (i+1));
-//            }
+            if(AIvsAI){
+                //AI vs AI
+                System.out.println("AI-" + currentPlayer + "'s turn");
+                int i = getOptimalMove();
+                moveStones(i);
+                System.out.println("Selected bin - " + (i+1));
+            }
+            else {
+                if (currentPlayer == 0) {
+                    System.out.println("Your turn");
+                    System.out.print("Enter bin no. (1-6) [Enter 0 to exit game]: ");
+                    int bin = new Scanner(System.in).nextInt();
 
-            //AI vs AI
-            System.out.println("AI-" + currentPlayer + "'s turn");
-            int i = getOptimalMove();
-            moveStones(i);
-            System.out.println("Selected bin - " + (i+1));
+                    if (bin == 0) exitGame = true;
+
+                    if (isValidMove(bin - 1)) {
+                        moveStones(bin - 1);
+                    } else {
+                        if (bin != 0) System.out.println("Invalid bin no.");
+                        //show error message only if the human player doesn't exit the game
+                    }
+                } else {
+                    System.out.println("AI's turn");
+                    int i = getOptimalMove();
+                    moveStones(i);
+                    System.out.println("Selected bin - " + (i + 1));
+                }
+            }
         }
     }
 
