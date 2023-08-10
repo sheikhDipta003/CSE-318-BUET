@@ -1,2 +1,0 @@
-Max-Cut Partition: 0 0 1 1 0 0 
-Max-Cut Value: 8
