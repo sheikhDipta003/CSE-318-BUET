@@ -5,6 +5,7 @@
 #include <climits>
 #include <algorithm>
 #include <unordered_set>
+#include <unordered_map>
 
 using namespace std;
 
@@ -168,7 +169,7 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
 vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter) {
     int n = graph.size();
     vector<int> currentPartition = initialPartition;
-    bool change = false;
+    bool change = true;
 
     while(change){
         change = false;

@@ -1,2 +1,2 @@
-Max-Cut Partition: {4, 2, 1} {5, 3}
+Max-Cut Partition: {5, 3} {4, 2, 1}
 Max-Cut Value: 50
