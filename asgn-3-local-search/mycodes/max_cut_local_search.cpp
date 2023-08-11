@@ -39,11 +39,18 @@ bool are_sets_identical(const unordered_set<int>& set1, const unordered_set<int>
 // prints all elements of any container
 template <typename Container>
 void showElements(const Container& container) {
-    for (const auto& element : container) {
-        std::cout << element << " ";
+    cout << "{";
+    auto it = container.begin();
+    if (it != container.end()) {
+        cout << *it;
+        it++;
     }
-    std::cout << std::endl;
+    for (; it != container.end(); it++) {
+        cout << ", " << *it;
+    }
+    cout << "}";
 }
+
 
 // Semi-greedy randomized construction of initial solution with RCL (Restricted Candidate List)
 vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
@@ -86,6 +93,7 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
         XY = X;
         XY.insert(Y.begin(), Y.end());
         set_difference(U.begin(), U.end(), XY.begin(), XY.end(), inserter(R, R.end()));
+
         if(are_sets_identical(XY,U)) break;     // if all the vertices are partitioned, break out of the loop
 
         unordered_map<int,int> sigmaX, sigmaY;  // vertex, cut-weight-contribution
@@ -157,23 +165,35 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
 }
 
 // Local search algorithm to find a Max-Cut solution
-vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter_count) {
+vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter) {
     int n = graph.size();
     vector<int> currentPartition = initialPartition;
-    int currentCut = calculateCut(graph, currentPartition);
+    bool change = false;
 
-    for (int i = 0; i < max_iter_count; i++) {
-        int v = rand() % n;                                     // select a vectex randomly
-        currentPartition[v] = 1 - currentPartition[v];          // Move the vertex to the other set
-        int newCut = calculateCut(graph, currentPartition);
+    while(change){
+        change = false;
+        for(int v = 0; v < n; v++){
+            for(int i = 0; i < max_iter ; i++){
+                int sigma_0 = 0, sigma_1 = 0;
+                for(int u = 0; u < n; u++){
+                    if(graph[v][u]){
+                        if(currentPartition[u] == 1)    sigma_0 += graph[v][u];
+                        else if(currentPartition[u] == 0)   sigma_1 += graph[v][u];
+                    }
+                }
 
-        if (newCut > currentCut) {
-            // Keep the move if it improves the cut
-            currentCut = newCut;
-        } else {
-            // Revert the move if it doesn't improve the cut
-            currentPartition[v] = 1 - currentPartition[v];
+                if(currentPartition[v] == 0 && sigma_1 >= sigma_0){
+                    currentPartition[v] = 1;
+                    change = true;
+                }
+                else if(currentPartition[v] == 1 && sigma_0 > sigma_1){
+                    currentPartition[v] = 0;
+                    change = true;
+                }
+            }
         }
+
+        // showElements(currentPartition);
     }
 
     return currentPartition;
@@ -199,26 +219,36 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, 
 }
 
 int main() {    
-    srand(static_cast<unsigned>(time(0))); // Seed the random number generator
+    srand(static_cast<unsigned>(time(0)));  // Seed the random number generator
+    freopen("output.txt", "w", stdout);     // redirect stdout and stdin to file
+    freopen("input.txt", "r", stdin);
 
-    // Sample graph represented using an adjacency matrix
-    vector<vector<int>> graph = {
-        {0, 5, 0, 0, 6},
-        {5, 0, 9, 0, 10},
-        {0, 9, 0, 15, 2},
-        {0, 0, 15, 0, 10},
-        {6, 10, 2, 10, 0}
-    };
+    int n, e;                               // number of vertices -> n, number of edges -> e
+    cin >> n >> e;
 
-    int max_iter_grasp = 10;        // Number of GRASP iterations
-    int max_iter_local = 1000;      // Number of iterations for local search
+    int u, v, wt;                           // u -> starting vertex, v -> ending vertex, wt -> weight of the edge (u---v)
+    vector<vector<int>> graph(n, vector<int>(n,0));
+    for(int i = 0 ; i < e; i++){
+        cin >> u >> v >> wt;
+        graph[u-1][v-1] = wt;               // the vertices start from 1 in the input file
+    }
+
+    int max_iter_grasp = 10;                // Number of GRASP iterations
+    int max_iter_local = 1000;              // Number of local search iterations
     vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp, max_iter_local);
 
     // Output the results
-    cout << "Max-Cut Partition: ";
-    for (int partition : maxCutPartition) {
-        cout << partition << " ";
+    unordered_set<int> S0, S1;
+    for(int i = 0; i < n; i++){
+        if(maxCutPartition[i] == 0) S0.insert(i+1);
     }
+    for(int i = 0; i < n; i++){
+        if(maxCutPartition[i] == 1) S1.insert(i+1);
+    }
+    cout << "Max-Cut Partition: ";
+    showElements(S0);
+    cout << " ";
+    showElements(S1);
     cout << endl;
 
     int maxCutValue = calculateCut(graph, maxCutPartition);
