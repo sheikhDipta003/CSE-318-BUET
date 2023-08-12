@@ -55,9 +55,8 @@ void showElements(const Container& container, std::ostream& os = std::cout) {
 
 
 // Semi-greedy randomized construction of initial solution with RCL (Restricted Candidate List)
-vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
+vector<int> semi_greedy_construction(const vector<vector<int>>& graph, double alpha) {
     int n = graph.size(), wmin = INT_MAX, wmax = INT_MIN;
-    double alpha = rand() / RAND_MAX;
     double thres;
     vector<pair<int, int>> e_rcl;
     vector<int> v_rcl;
@@ -224,12 +223,12 @@ vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> i
 }
 
 // GRASP with local search algorithm to find a Max-Cut solution
-vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, int max_iter_local) {
+vector<int> grasp_max_cut(const vector<vector<int>>& graph, double alpha, int max_iter_grasp, int max_iter_local) {
     vector<int> bestSolution;
     int bestCutValue = INT_MIN;
 
     for (int i = 0; i < max_iter_grasp; i++) {
-        vector<int> currentSolution = semi_greedy_construction(graph);
+        vector<int> currentSolution = semi_greedy_construction(graph, alpha);
         vector<int> improvedSolution = local_search_max_cut(graph, currentSolution, max_iter_local); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
 
@@ -244,7 +243,6 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, 
 
 int main(int argc, char* argv[]) {    
     srand(static_cast<unsigned>(time(0)));  // Seed the random number generator
-    ofstream outFile("output.txt");
     ifstream inFile("input.txt");
 
     int n, e;                               // number of vertices -> n, number of edges -> e
@@ -257,27 +255,17 @@ int main(int argc, char* argv[]) {
         graph[u][v] = wt;
     }
 
-    int max_iter_local = stoi(argv[1]);              // Number of local search iterations
-    int max_iter_grasp = stoi(argv[2]);                // Number of GRASP iterations
-    
-    vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp, max_iter_local);
+    int max_iter_local = stoi(argv[1]);
+    int max_iter_grasp = 10;
+    double alpha = stoi(argv[2]);
+    ofstream statsFile(argv[3]);
 
-    // Output the results
-    unordered_set<int> S0, S1;
-    for(int i = 0; i < n; i++){
-        if(maxCutPartition[i] == 0) S0.insert(i+1);
+    for (; max_iter_grasp <= 25; max_iter_grasp += 5) {
+        vector<int> maxCutPartition = grasp_max_cut(graph, alpha, max_iter_grasp, max_iter_local);
+        int maxCutValue = calculateCut(graph, maxCutPartition);
+        statsFile << max_iter_grasp << " " << maxCutValue << endl;
     }
-    for(int i = 0; i < n; i++){
-        if(maxCutPartition[i] == 1) S1.insert(i+1);
-    }
-    outFile << "Max-Cut Partition: ";
-    showElements(S0, outFile);
-    outFile << " ";
-    showElements(S1, outFile);
-    outFile << endl;
-
-    int maxCutValue = calculateCut(graph, maxCutPartition);
-    outFile << "Max-Cut Value: " << maxCutValue << endl;
+    statsFile.close();
 
     return 0;
 }
