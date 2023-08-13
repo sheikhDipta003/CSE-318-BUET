@@ -4,8 +4,8 @@ rm -f output.txt
 echo "Generating object files"
 g++ max_cut_local_search.cpp -o maxcut.out
 echo "All ready, running"
-# args : <max_iter_local> <max_iter_local>
-./maxcut.out 1000 30
+# args : <max_iter_local> <max_iter_grasp>
+./maxcut.out 1000 10
 
 # version-2
 # echo "Generating object files"

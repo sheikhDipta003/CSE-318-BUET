@@ -7,15 +7,19 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <fstream>
+#include <random>
 
 using namespace std;
+
+ofstream outFile("output.txt", std::ios::app);
+ifstream inFile("input.txt");
 
 // Function to calculate the cut value of the given partition
 int calculateCut(const vector<vector<int>>& graph, const vector<int>& partition) {
     int cutValue = 0;
     for (int i = 0; i < graph.size(); i++) {
         for (int j = i + 1; j < graph[i].size(); j++) {
-            if (partition[i] != partition[j]) {
+            if (partition[i] != -1 && partition[i] != partition[j]) {
                 cutValue += graph[i][j];
             }
         }
@@ -53,6 +57,68 @@ void showElements(const Container& container, std::ostream& os = std::cout) {
     os << "}";
 }
 
+// Function to find the maximum weight edge in the graph
+tuple<int,int,int> findMaxWeightEdge(vector<vector<int>> graph) {
+    int u = -1, v = -1, wt = INT_MIN, n = graph.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = i+1; j < n; j++) {
+            if (graph[i][j] > wt) {
+                wt = graph[i][j];
+                u = i;
+                v = j;
+            }
+        }
+    }
+
+    return make_tuple(u,v,wt);
+}
+
+vector<int> greedy_construction(const vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> currentPartition(n, -1);
+    int currentCut = -1;
+
+    int u, v, wt;
+    tie(u, v, wt) = findMaxWeightEdge(graph);
+    currentPartition[u] = 0;
+    currentPartition[v] = 1;
+
+    for(int i = 0; i < n; i++){
+        if (currentPartition[i] == -1) {
+            currentPartition[i] = 0;
+            int newCut_0 = calculateCut(graph, currentPartition);
+            currentPartition[i] = 1;
+            int newCut_1 = calculateCut(graph, currentPartition);
+            if(newCut_0 >= newCut_1){
+                currentPartition[i] = 0;
+            }
+            else{
+                currentPartition[i] = 1;
+            }
+        }
+    }
+
+    return currentPartition;
+}
+
+vector<int> randomized_construction(const vector<vector<int>>& graph) {
+    int n = graph.size();
+    vector<int> vertices(n, 0);
+    vector<int> currentPartition(n, -1);
+    for(int i = 0; i < n; i++) vertices[i] = i;
+
+    // Initialize random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> uniform_dist(0, 1);
+
+    for (int v : vertices) {
+        // Randomly assign vertex to partition X (0) or partition Y (1)
+        currentPartition[v] = uniform_dist(gen);
+    }
+
+    return currentPartition;
+}
 
 // Semi-greedy randomized construction of initial solution with RCL (Restricted Candidate List)
 vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
@@ -67,10 +133,15 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
     for(int i = 0; i < n; i++)  { R.insert(i); U.insert(i); }
 
     for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+        for(int j = i+1; j < n; j++){
             if(graph[i][j] < wmin){
                 wmin = graph[i][j];
             }
+        }
+    }
+
+    for(int i = 0; i < n; i++){
+        for(int j = i+1; j < n; j++){
             if(graph[i][j] > wmax){
                 wmax = graph[i][j];
             }
@@ -79,7 +150,7 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
 
     thres = wmin + alpha * (wmax - wmin);
     for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
+        for(int j = i+1; j < n; j++){
             if(graph[i][j] >= thres){
                 e_rcl.push_back({i,j});
             }
@@ -90,13 +161,10 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
     X.insert(random_edge.first);
     Y.insert(random_edge.second);
     
-    while(true){
-        // store union of X and Y in XY and subtract XY from U to get R
-        XY = X;
-        XY.insert(Y.begin(), Y.end());
+    // until all the vertices are partitioned, continue the loop
+    while(!are_sets_identical(XY,U)){
+        // subtract XY from U to get R
         set_difference(U.begin(), U.end(), XY.begin(), XY.end(), inserter(R, R.end()));
-
-        if(are_sets_identical(XY,U)) break;     // if all the vertices are partitioned, break out of the loop
 
         unordered_map<int,int> sigmaX, sigmaY;  // vertex, cut-weight-contribution
         for(int v : R){
@@ -157,6 +225,16 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
         else{
             Y.insert(random_vertex);
         }
+
+        // testing
+        // showElements(X, outFile);
+        // outFile << endl;
+        // showElements(Y, outFile);
+        // outFile << endl << endl;
+
+        // store union of X and Y in XY
+        XY = X;
+        XY.insert(Y.begin(), Y.end());
     }
 
     for(int v : Y){
@@ -169,58 +247,56 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
 // Local search algorithm to find a Max-Cut solution
 vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter) {
     // version-1
+    // int n = graph.size();
+    // vector<int> currentPartition = initialPartition;
+    // int currentCut = calculateCut(graph, currentPartition);
+
+    // for (int i = 0; i < max_iter; i++) {
+    //     int v = rand() % n;                                     // select a vectex randomly
+    //     currentPartition[v] = 1 - currentPartition[v];          // Move the vertex to the other set
+    //     int newCut = calculateCut(graph, currentPartition);
+
+    //     if (newCut > currentCut) {
+    //         // Keep the move if it improves the cut
+    //         currentCut = newCut;
+    //     } else {
+    //         // Revert the move if it doesn't improve the cut
+    //         currentPartition[v] = 1 - currentPartition[v];
+    //     }
+    // }
+
+    // return currentPartition;
+
+    // version-2
     int n = graph.size();
     vector<int> currentPartition = initialPartition;
-    int currentCut = calculateCut(graph, currentPartition);
+    bool change = true;
 
-    for (int i = 0; i < max_iter; i++) {
-        int v = rand() % n;                                     // select a vectex randomly
-        currentPartition[v] = 1 - currentPartition[v];          // Move the vertex to the other set
-        int newCut = calculateCut(graph, currentPartition);
+    while(change){
+        change = false;
+        for(int v = 0; v < n; v++){
+            for(int i = 0; i < max_iter ; i++){
+                int sigma_0 = 0, sigma_1 = 0;
+                for(int u = 0; u < n; u++){
+                    if(graph[v][u]){
+                        if(currentPartition[u] == 1)    sigma_0 += graph[v][u];
+                        else if(currentPartition[u] == 0)   sigma_1 += graph[v][u];
+                    }
+                }
 
-        if (newCut > currentCut) {
-            // Keep the move if it improves the cut
-            currentCut = newCut;
-        } else {
-            // Revert the move if it doesn't improve the cut
-            currentPartition[v] = 1 - currentPartition[v];
+                if(currentPartition[v] == 0 && sigma_1 > sigma_0){
+                    currentPartition[v] = 1;
+                    change = true;
+                }
+                else if(currentPartition[v] == 1 && sigma_0 > sigma_1){
+                    currentPartition[v] = 0;
+                    change = true;
+                }
+            }
         }
     }
 
     return currentPartition;
-
-    // version-2
-    // int n = graph.size();
-    // vector<int> currentPartition = initialPartition;
-    // bool change = true;
-
-    // while(change){
-    //     change = false;
-    //     for(int v = 0; v < n; v++){
-    //         for(int i = 0; i < max_iter ; i++){
-    //             int sigma_0 = 0, sigma_1 = 0;
-    //             for(int u = 0; u < n; u++){
-    //                 if(graph[v][u]){
-    //                     if(currentPartition[u] == 1)    sigma_0 += graph[v][u];
-    //                     else if(currentPartition[u] == 0)   sigma_1 += graph[v][u];
-    //                 }
-    //             }
-
-    //             if(currentPartition[v] == 0 && sigma_1 >= sigma_0){
-    //                 currentPartition[v] = 1;
-    //                 change = true;
-    //             }
-    //             else if(currentPartition[v] == 1 && sigma_0 > sigma_1){
-    //                 currentPartition[v] = 0;
-    //                 change = true;
-    //             }
-    //         }
-    //     }
-
-    //     // showElements(currentPartition);
-    // }
-
-    // return currentPartition;
 }
 
 // GRASP with local search algorithm to find a Max-Cut solution
@@ -229,7 +305,18 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, 
     int bestCutValue = INT_MIN;
 
     for (int i = 0; i < max_iter_grasp; i++) {
+        // cout << "before calling greedy_construction()\n";
+        // vector<int> currentSolution = greedy_construction(graph);
+        // cout << "after calling greedy_construction()\n";
+
+        // cout << "before calling randomized_construction()\n";
+        // vector<int> currentSolution = randomized_construction(graph);
+        // cout << "after calling randomized_construction()\n";
+
+        cout << "before calling semi_greedy_construction()\n";
         vector<int> currentSolution = semi_greedy_construction(graph);
+        cout << "after calling semi_greedy_construction()\n";
+
         vector<int> improvedSolution = local_search_max_cut(graph, currentSolution, max_iter_local); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
 
@@ -244,8 +331,6 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, 
 
 int main(int argc, char* argv[]) {    
     srand(static_cast<unsigned>(time(0)));  // Seed the random number generator
-    ofstream outFile("output.txt");
-    ifstream inFile("input.txt");
 
     int n, e;                               // number of vertices -> n, number of edges -> e
     inFile >> n >> e;
@@ -254,10 +339,11 @@ int main(int argc, char* argv[]) {
     vector<vector<int>> graph(n, vector<int>(n,0));
     for(int i = 0 ; i < e; i++){
         inFile >> u >> v >> wt;
-        graph[u][v] = wt;
+        graph[u-1][v-1] = wt;
+        graph[v-1][u-1] = wt;
     }
 
-    int max_iter_local = stoi(argv[1]);              // Number of local search iterations
+    int max_iter_local = stoi(argv[1]);                 // Number of local search iterations
     int max_iter_grasp = stoi(argv[2]);                // Number of GRASP iterations
     
     vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp, max_iter_local);
