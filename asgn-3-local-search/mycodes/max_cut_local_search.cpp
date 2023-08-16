@@ -12,7 +12,10 @@
 using namespace std;
 
 ofstream outFile("output.txt", std::ios::app);
-ifstream inFile("input.txt");
+ofstream statsFile("stats.txt", std::ios::app);
+ifstream inFile("inputs/g11.rud");
+
+void printResult(const vector<vector<int>>& graph, const vector<int>& finalPartition);
 
 // Function to calculate the cut value of the given partition
 int calculateCut(const vector<vector<int>>& graph, const vector<int>& partition) {
@@ -73,6 +76,7 @@ tuple<int,int,int> findMaxWeightEdge(vector<vector<int>> graph) {
     return make_tuple(u,v,wt);
 }
 
+// Greedy contstruction method for the initial solution in GRASP
 vector<int> greedy_construction(const vector<vector<int>>& graph) {
     int n = graph.size();
     vector<int> currentPartition(n, -1);
@@ -98,9 +102,14 @@ vector<int> greedy_construction(const vector<vector<int>>& graph) {
         }
     }
 
+    statsFile << "greedy_construction: " << calculateCut(graph, currentPartition) << endl;
+
+    // printResult(graph, currentPartition);
+
     return currentPartition;
 }
 
+// simple random heuristic for the initial solution in GRASP
 vector<int> randomized_construction(const vector<vector<int>>& graph) {
     int n = graph.size();
     vector<int> vertices(n, 0);
@@ -116,6 +125,10 @@ vector<int> randomized_construction(const vector<vector<int>>& graph) {
         // Randomly assign vertex to partition X (0) or partition Y (1)
         currentPartition[v] = uniform_dist(gen);
     }
+
+    statsFile << "randomized_construction: " << calculateCut(graph, currentPartition) << endl;
+
+    // printResult(graph, currentPartition);
 
     return currentPartition;
 }
@@ -241,11 +254,13 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
         resultPartition[v] = 1;
     }
 
+    statsFile << "semi_greedy_construction: " << calculateCut(graph, resultPartition) << endl;
+
     return resultPartition;
 }
 
 // Local search algorithm to find a Max-Cut solution
-vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition, int max_iter) {
+vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition) {
     // version-1
     // int n = graph.size();
     // vector<int> currentPartition = initialPartition;
@@ -271,36 +286,39 @@ vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> i
     int n = graph.size();
     vector<int> currentPartition = initialPartition;
     bool change = true;
+    int k = 0;
 
     while(change){
         change = false;
+        k++;
         for(int v = 0; v < n; v++){
-            for(int i = 0; i < max_iter ; i++){
-                int sigma_0 = 0, sigma_1 = 0;
-                for(int u = 0; u < n; u++){
-                    if(graph[v][u]){
-                        if(currentPartition[u] == 1)    sigma_0 += graph[v][u];
-                        else if(currentPartition[u] == 0)   sigma_1 += graph[v][u];
-                    }
+            int sigma_0 = 0, sigma_1 = 0;
+            for(int u = 0; u < n; u++){
+                if(graph[v][u]){
+                    if(currentPartition[u] == 1)    sigma_0 += graph[v][u];
+                    else if(currentPartition[u] == 0)   sigma_1 += graph[v][u];
                 }
+            }
 
-                if(currentPartition[v] == 0 && sigma_1 > sigma_0){
-                    currentPartition[v] = 1;
-                    change = true;
-                }
-                else if(currentPartition[v] == 1 && sigma_0 > sigma_1){
-                    currentPartition[v] = 0;
-                    change = true;
-                }
+            if(currentPartition[v] == 0 && sigma_1 > sigma_0){
+                currentPartition[v] = 1;
+                change = true;
+            }
+            else if(currentPartition[v] == 1 && sigma_0 > sigma_1){
+                currentPartition[v] = 0;
+                change = true;
             }
         }
     }
+
+    statsFile << "no. of iterations in local search : " << k << endl;
+    statsFile << "maxcut-value in this iteration : " << calculateCut(graph, currentPartition) << endl << endl;
 
     return currentPartition;
 }
 
 // GRASP with local search algorithm to find a Max-Cut solution
-vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, int max_iter_local) {
+vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp) {
     vector<int> bestSolution;
     int bestCutValue = INT_MIN;
 
@@ -317,7 +335,7 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp, 
         vector<int> currentSolution = semi_greedy_construction(graph);
         cout << "after calling semi_greedy_construction()\n";
 
-        vector<int> improvedSolution = local_search_max_cut(graph, currentSolution, max_iter_local); // Use local search for improvement
+        vector<int> improvedSolution = local_search_max_cut(graph, currentSolution); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
 
         if (currentCutValue > bestCutValue) {
@@ -342,28 +360,38 @@ int main(int argc, char* argv[]) {
         graph[u-1][v-1] = wt;
         graph[v-1][u-1] = wt;
     }
-
-    int max_iter_local = stoi(argv[1]);                 // Number of local search iterations
-    int max_iter_grasp = stoi(argv[2]);                // Number of GRASP iterations
     
-    vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp, max_iter_local);
+    int max_iter_grasp = 10;                // Number of GRASP iterations
+
+    // Check if the argument are provided
+    if (argc >= 2) {
+        max_iter_grasp = std::atoi(argv[1]);    // overwrite default value
+    }
+
+    vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp);
 
     // Output the results
+    printResult(graph, maxCutPartition);
+
+    return 0;
+}
+
+void printResult(const vector<vector<int>>& graph, const vector<int>& finalPartition){
     unordered_set<int> S0, S1;
+    int n = graph.size();
+
     for(int i = 0; i < n; i++){
-        if(maxCutPartition[i] == 0) S0.insert(i+1);
+        if(finalPartition[i] == 0) S0.insert(i+1);
     }
     for(int i = 0; i < n; i++){
-        if(maxCutPartition[i] == 1) S1.insert(i+1);
+        if(finalPartition[i] == 1) S1.insert(i+1);
     }
-    outFile << "Max-Cut Partition: ";
+    outFile << "Max Partition:\n";
     showElements(S0, outFile);
-    outFile << " ";
+    outFile << endl;
     showElements(S1, outFile);
     outFile << endl;
 
-    int maxCutValue = calculateCut(graph, maxCutPartition);
-    outFile << "Max-Cut Value: " << maxCutValue << endl;
-
-    return 0;
+    int maxCutValue = calculateCut(graph, finalPartition);
+    outFile << "Max-Cut Value: " << maxCutValue << endl << endl;
 }

@@ -1,0 +1,665 @@
+---------- g11 ---------------
+semi_greedy_construction: 408
+no. of iterations in local search : 4
+maxcut-value 478
+
+semi_greedy_construction: 396
+no. of iterations in local search : 2
+maxcut-value 454
+
+semi_greedy_construction: 400
+no. of iterations in local search : 3
+maxcut-value 458
+
+semi_greedy_construction: 420
+no. of iterations in local search : 2
+maxcut-value 460
+
+semi_greedy_construction: 422
+no. of iterations in local search : 3
+maxcut-value 468
+
+semi_greedy_construction: 414
+no. of iterations in local search : 3
+maxcut-value 470
+
+semi_greedy_construction: 424
+no. of iterations in local search : 2
+maxcut-value 468
+
+semi_greedy_construction: 396
+no. of iterations in local search : 2
+maxcut-value 462
+
+semi_greedy_construction: 416
+no. of iterations in local search : 2
+maxcut-value 472
+
+semi_greedy_construction: 412
+no. of iterations in local search : 3
+maxcut-value 472
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 400
+
+randomized_construction: 28
+no. of iterations in local search : 3
+maxcut-value in this iteration : 430
+
+randomized_construction: 14
+no. of iterations in local search : 3
+maxcut-value in this iteration : 438
+
+randomized_construction: 10
+no. of iterations in local search : 4
+maxcut-value in this iteration : 434
+
+randomized_construction: 10
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: 14
+no. of iterations in local search : 4
+maxcut-value in this iteration : 416
+
+randomized_construction: -18
+no. of iterations in local search : 3
+maxcut-value in this iteration : 400
+
+randomized_construction: 14
+no. of iterations in local search : 3
+maxcut-value in this iteration : 420
+
+randomized_construction: 6
+no. of iterations in local search : 5
+maxcut-value in this iteration : 428
+
+randomized_construction: 34
+no. of iterations in local search : 5
+maxcut-value in this iteration : 420
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 408
+
+randomized_construction: 12
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+randomized_construction: 0
+no. of iterations in local search : 4
+maxcut-value in this iteration : 434
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 408
+
+randomized_construction: 38
+no. of iterations in local search : 3
+maxcut-value in this iteration : 422
+
+randomized_construction: 8
+no. of iterations in local search : 4
+maxcut-value in this iteration : 416
+
+randomized_construction: 12
+no. of iterations in local search : 4
+maxcut-value in this iteration : 418
+
+randomized_construction: 44
+no. of iterations in local search : 4
+maxcut-value in this iteration : 430
+
+randomized_construction: 0
+no. of iterations in local search : 4
+maxcut-value in this iteration : 404
+
+randomized_construction: 30
+no. of iterations in local search : 3
+maxcut-value in this iteration : 424
+
+randomized_construction: 8
+no. of iterations in local search : 4
+maxcut-value in this iteration : 426
+
+randomized_construction: 0
+no. of iterations in local search : 5
+maxcut-value in this iteration : 430
+
+randomized_construction: 42
+no. of iterations in local search : 4
+maxcut-value in this iteration : 390
+
+randomized_construction: -16
+no. of iterations in local search : 4
+maxcut-value in this iteration : 430
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 398
+
+randomized_construction: 22
+no. of iterations in local search : 3
+maxcut-value in this iteration : 428
+
+randomized_construction: -12
+no. of iterations in local search : 4
+maxcut-value in this iteration : 444
+
+randomized_construction: 34
+no. of iterations in local search : 4
+maxcut-value in this iteration : 436
+
+randomized_construction: 64
+no. of iterations in local search : 5
+maxcut-value in this iteration : 418
+
+randomized_construction: 38
+no. of iterations in local search : 4
+maxcut-value in this iteration : 406
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+
+---------- g13 ---------------
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+randomized_construction: 48
+no. of iterations in local search : 5
+maxcut-value in this iteration : 422
+
+randomized_construction: 6
+no. of iterations in local search : 4
+maxcut-value in this iteration : 446
+
+randomized_construction: 62
+no. of iterations in local search : 3
+maxcut-value in this iteration : 424
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 422
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 438
+
+randomized_construction: 62
+no. of iterations in local search : 4
+maxcut-value in this iteration : 414
+
+randomized_construction: 0
+no. of iterations in local search : 3
+maxcut-value in this iteration : 432
+
+randomized_construction: 6
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 432
+
+randomized_construction: -6
+no. of iterations in local search : 5
+maxcut-value in this iteration : 454
+
+semi_greedy_construction: 394
+no. of iterations in local search : 3
+maxcut-value in this iteration : 460
+
+semi_greedy_construction: 382
+no. of iterations in local search : 3
+maxcut-value in this iteration : 448
+
+semi_greedy_construction: 408
+no. of iterations in local search : 3
+maxcut-value in this iteration : 454
+
+semi_greedy_construction: 402
+no. of iterations in local search : 3
+maxcut-value in this iteration : 468
+
+semi_greedy_construction: 412
+no. of iterations in local search : 3
+maxcut-value in this iteration : 464
+
+semi_greedy_construction: 404
+no. of iterations in local search : 3
+maxcut-value in this iteration : 470
+
+semi_greedy_construction: 398
+no. of iterations in local search : 3
+maxcut-value in this iteration : 446
+
+semi_greedy_construction: 416
+no. of iterations in local search : 2
+maxcut-value in this iteration : 482
+
+semi_greedy_construction: 392
+no. of iterations in local search : 2
+maxcut-value in this iteration : 448
+
+semi_greedy_construction: 420
+no. of iterations in local search : 2
+maxcut-value in this iteration : 458
+
+
+---------- g12 ---------------
+randomized_construction: 10
+no. of iterations in local search : 5
+maxcut-value in this iteration : 436
+
+randomized_construction: -14
+no. of iterations in local search : 4
+maxcut-value in this iteration : 448
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 440
+
+randomized_construction: 32
+no. of iterations in local search : 4
+maxcut-value in this iteration : 404
+
+randomized_construction: 16
+no. of iterations in local search : 3
+maxcut-value in this iteration : 418
+
+randomized_construction: 14
+no. of iterations in local search : 4
+maxcut-value in this iteration : 416
+
+randomized_construction: 18
+no. of iterations in local search : 5
+maxcut-value in this iteration : 418
+
+randomized_construction: 38
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+randomized_construction: 62
+no. of iterations in local search : 4
+maxcut-value in this iteration : 428
+
+randomized_construction: 4
+no. of iterations in local search : 5
+maxcut-value in this iteration : 414
+
+randomized_construction: 46
+no. of iterations in local search : 4
+maxcut-value in this iteration : 408
+
+randomized_construction: 2
+no. of iterations in local search : 3
+maxcut-value in this iteration : 420
+
+randomized_construction: -20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 404
+
+randomized_construction: 2
+no. of iterations in local search : 5
+maxcut-value in this iteration : 416
+
+randomized_construction: 16
+no. of iterations in local search : 3
+maxcut-value in this iteration : 414
+
+randomized_construction: 30
+no. of iterations in local search : 4
+maxcut-value in this iteration : 414
+
+randomized_construction: 30
+no. of iterations in local search : 4
+maxcut-value in this iteration : 436
+
+randomized_construction: 24
+no. of iterations in local search : 4
+maxcut-value in this iteration : 404
+
+randomized_construction: 28
+no. of iterations in local search : 4
+maxcut-value in this iteration : 430
+
+randomized_construction: 10
+no. of iterations in local search : 4
+maxcut-value in this iteration : 410
+
+randomized_construction: 48
+no. of iterations in local search : 5
+maxcut-value in this iteration : 410
+
+randomized_construction: 32
+no. of iterations in local search : 3
+maxcut-value in this iteration : 404
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 412
+
+randomized_construction: 38
+no. of iterations in local search : 3
+maxcut-value in this iteration : 408
+
+randomized_construction: 18
+no. of iterations in local search : 3
+maxcut-value in this iteration : 420
+
+randomized_construction: 22
+no. of iterations in local search : 4
+maxcut-value in this iteration : 426
+
+randomized_construction: 16
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 440
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 410
+
+randomized_construction: 34
+no. of iterations in local search : 4
+maxcut-value in this iteration : 456
+
+randomized_construction: 16
+no. of iterations in local search : 4
+maxcut-value in this iteration : 440
+
+randomized_construction: 14
+no. of iterations in local search : 3
+maxcut-value in this iteration : 424
+
+randomized_construction: 24
+no. of iterations in local search : 4
+maxcut-value in this iteration : 406
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 430
+
+randomized_construction: 46
+no. of iterations in local search : 4
+maxcut-value in this iteration : 420
+
+randomized_construction: 16
+no. of iterations in local search : 3
+maxcut-value in this iteration : 440
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 436
+
+randomized_construction: 28
+no. of iterations in local search : 4
+maxcut-value in this iteration : 434
+
+randomized_construction: 56
+no. of iterations in local search : 4
+maxcut-value in this iteration : 436
+
+randomized_construction: 24
+no. of iterations in local search : 3
+maxcut-value in this iteration : 400
+
+randomized_construction: 4
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: 26
+no. of iterations in local search : 3
+maxcut-value in this iteration : 408
+
+randomized_construction: 34
+no. of iterations in local search : 3
+maxcut-value in this iteration : 434
+
+randomized_construction: 42
+no. of iterations in local search : 4
+maxcut-value in this iteration : 436
+
+randomized_construction: 16
+no. of iterations in local search : 3
+maxcut-value in this iteration : 422
+
+randomized_construction: 34
+no. of iterations in local search : 4
+maxcut-value in this iteration : 414
+
+randomized_construction: 42
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: 38
+no. of iterations in local search : 3
+maxcut-value in this iteration : 410
+
+randomized_construction: 8
+no. of iterations in local search : 3
+maxcut-value in this iteration : 430
+
+randomized_construction: 26
+no. of iterations in local search : 5
+maxcut-value in this iteration : 456
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 402
+
+randomized_construction: 4
+no. of iterations in local search : 3
+maxcut-value in this iteration : 454
+
+randomized_construction: 50
+no. of iterations in local search : 3
+maxcut-value in this iteration : 434
+
+randomized_construction: 44
+no. of iterations in local search : 3
+maxcut-value in this iteration : 422
+
+randomized_construction: 14
+no. of iterations in local search : 4
+maxcut-value in this iteration : 426
+
+randomized_construction: -12
+no. of iterations in local search : 3
+maxcut-value in this iteration : 428
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 448
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 440
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: 10
+no. of iterations in local search : 3
+maxcut-value in this iteration : 440
+
+randomized_construction: -16
+no. of iterations in local search : 5
+maxcut-value in this iteration : 408
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 444
+
+randomized_construction: 24
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+randomized_construction: 26
+no. of iterations in local search : 3
+maxcut-value in this iteration : 428
+
+randomized_construction: 6
+no. of iterations in local search : 4
+maxcut-value in this iteration : 432
+
+randomized_construction: -2
+no. of iterations in local search : 4
+maxcut-value in this iteration : 462
+
+randomized_construction: 20
+no. of iterations in local search : 3
+maxcut-value in this iteration : 430
+
+randomized_construction: 20
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+randomized_construction: 18
+no. of iterations in local search : 4
+maxcut-value in this iteration : 446
+
+randomized_construction: 16
+no. of iterations in local search : 4
+maxcut-value in this iteration : 424
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+greedy_construction: 432
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+semi_greedy_construction: 414
+no. of iterations in local search : 2
+maxcut-value in this iteration : 464
+
+semi_greedy_construction: 398
+no. of iterations in local search : 3
+maxcut-value in this iteration : 464
+
+semi_greedy_construction: 380
+no. of iterations in local search : 3
+maxcut-value in this iteration : 446
+
+semi_greedy_construction: 404
+no. of iterations in local search : 3
+maxcut-value in this iteration : 448
+
+semi_greedy_construction: 406
+no. of iterations in local search : 2
+maxcut-value in this iteration : 454
+
+semi_greedy_construction: 406
+no. of iterations in local search : 2
+maxcut-value in this iteration : 456
+
+semi_greedy_construction: 428
+no. of iterations in local search : 2
+maxcut-value in this iteration : 472
+
+semi_greedy_construction: 402
+no. of iterations in local search : 2
+maxcut-value in this iteration : 468
+
+semi_greedy_construction: 394
+no. of iterations in local search : 2
+maxcut-value in this iteration : 452
+
+semi_greedy_construction: 404
+no. of iterations in local search : 3
+maxcut-value in this iteration : 452
+
