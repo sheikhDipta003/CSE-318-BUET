@@ -11,11 +11,14 @@
 
 using namespace std;
 
+void printResult(const vector<vector<int>>& graph, const vector<int>& finalPartition);
+
 ofstream outFile("output.txt", std::ios::app);
 ofstream statsFile("stats.txt", std::ios::app);
-ifstream inFile("inputs/g11.rud");
+ifstream inFile("inputs/g12.rud");
 
-void printResult(const vector<vector<int>>& graph, const vector<int>& finalPartition);
+int k = 0;      //total number of iteration of local_search_max_cut() for a given 'max_iter_grasp' in main()
+int cutValue = 0;   //summation of the cut-values of each call to local_search_max_cut() for a given 'max_iter_grasp' in main()
 
 // Function to calculate the cut value of the given partition
 int calculateCut(const vector<vector<int>>& graph, const vector<int>& partition) {
@@ -102,8 +105,7 @@ vector<int> greedy_construction(const vector<vector<int>>& graph) {
         }
     }
 
-    statsFile << "greedy_construction: " << calculateCut(graph, currentPartition) << endl;
-
+    // statsFile << "greedy_construction: " << calculateCut(graph, currentPartition) << endl;
     // printResult(graph, currentPartition);
 
     return currentPartition;
@@ -126,8 +128,7 @@ vector<int> randomized_construction(const vector<vector<int>>& graph) {
         currentPartition[v] = uniform_dist(gen);
     }
 
-    statsFile << "randomized_construction: " << calculateCut(graph, currentPartition) << endl;
-
+    // statsFile << "randomized_construction: " << calculateCut(graph, currentPartition) << endl;
     // printResult(graph, currentPartition);
 
     return currentPartition;
@@ -254,43 +255,21 @@ vector<int> semi_greedy_construction(const vector<vector<int>>& graph) {
         resultPartition[v] = 1;
     }
 
-    statsFile << "semi_greedy_construction: " << calculateCut(graph, resultPartition) << endl;
+    // statsFile << "semi_greedy_construction: " << calculateCut(graph, resultPartition) << endl;
 
     return resultPartition;
 }
 
 // Local search algorithm to find a Max-Cut solution
 vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> initialPartition) {
-    // version-1
-    // int n = graph.size();
-    // vector<int> currentPartition = initialPartition;
-    // int currentCut = calculateCut(graph, currentPartition);
-
-    // for (int i = 0; i < max_iter; i++) {
-    //     int v = rand() % n;                                     // select a vectex randomly
-    //     currentPartition[v] = 1 - currentPartition[v];          // Move the vertex to the other set
-    //     int newCut = calculateCut(graph, currentPartition);
-
-    //     if (newCut > currentCut) {
-    //         // Keep the move if it improves the cut
-    //         currentCut = newCut;
-    //     } else {
-    //         // Revert the move if it doesn't improve the cut
-    //         currentPartition[v] = 1 - currentPartition[v];
-    //     }
-    // }
-
-    // return currentPartition;
-
-    // version-2
     int n = graph.size();
     vector<int> currentPartition = initialPartition;
     bool change = true;
-    int k = 0;
+    int i = 0;
 
     while(change){
         change = false;
-        k++;
+        i++;
         for(int v = 0; v < n; v++){
             int sigma_0 = 0, sigma_1 = 0;
             for(int u = 0; u < n; u++){
@@ -311,8 +290,11 @@ vector<int> local_search_max_cut(const vector<vector<int>>& graph, vector<int> i
         }
     }
 
-    statsFile << "no. of iterations in local search : " << k << endl;
-    statsFile << "maxcut-value in this iteration : " << calculateCut(graph, currentPartition) << endl << endl;
+    k += i;
+    cutValue += calculateCut(graph, currentPartition);
+
+    // statsFile << "no. of iterations in local search : " << k << endl;
+    // statsFile << "maxcut-value in this iteration : " << calculateCut(graph, currentPartition) << endl << endl;
 
     return currentPartition;
 }
@@ -323,17 +305,11 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp) 
     int bestCutValue = INT_MIN;
 
     for (int i = 0; i < max_iter_grasp; i++) {
-        // cout << "before calling greedy_construction()\n";
-        // vector<int> currentSolution = greedy_construction(graph);
-        // cout << "after calling greedy_construction()\n";
+        cout << "GRASP iteration no. : " << i << endl;
 
-        // cout << "before calling randomized_construction()\n";
         // vector<int> currentSolution = randomized_construction(graph);
-        // cout << "after calling randomized_construction()\n";
-
-        cout << "before calling semi_greedy_construction()\n";
-        vector<int> currentSolution = semi_greedy_construction(graph);
-        cout << "after calling semi_greedy_construction()\n";
+        vector<int> currentSolution = greedy_construction(graph);
+        // vector<int> currentSolution = semi_greedy_construction(graph);
 
         vector<int> improvedSolution = local_search_max_cut(graph, currentSolution); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
@@ -371,6 +347,10 @@ int main(int argc, char* argv[]) {
     vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp);
 
     // Output the results
+    statsFile << "greedy_construction:\n";
+    statsFile << "average no. of iterations of local search : " << (k * 1.0/max_iter_grasp) << ", average cut-value of max_cut_local_search() : " << (cutValue * 1.0/max_iter_grasp) << endl;
+    statsFile << "no. of iterations of GRASP : " << max_iter_grasp << ", best cut-value of grasp_max_cut() : " << calculateCut(graph, maxCutPartition) << endl << endl;
+
     printResult(graph, maxCutPartition);
 
     return 0;
@@ -386,6 +366,8 @@ void printResult(const vector<vector<int>>& graph, const vector<int>& finalParti
     for(int i = 0; i < n; i++){
         if(finalPartition[i] == 1) S1.insert(i+1);
     }
+
+    outFile << "greedy_construction:\n";
     outFile << "Max Partition:\n";
     showElements(S0, outFile);
     outFile << endl;
