@@ -101,3 +101,126 @@ greedy_construction:
 average no. of iterations of local search : 3, average cut-value of max_cut_local_search() : 450
 no. of iterations of GRASP : 20, best cut-value of grasp_max_cut() : 450
 
+semi_greedy_construction:
+average no. of iterations of local search : 2.86667, average cut-value of max_cut_local_search() : 449.867
+no. of iterations of GRASP : 30, best cut-value of grasp_max_cut() : 476
+
+
+----------g16------------
+randomized_construction:
+average no. of iterations of local search : 4.18, average cut-value of max_cut_local_search() : 2903.38
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 2931
+
+randomized_construction:
+average no. of iterations of local search : 4.1, average cut-value of max_cut_local_search() : 2899.67
+no. of iterations of GRASP : 60, best cut-value of grasp_max_cut() : 2933
+
+randomized_construction:
+average no. of iterations of local search : 4.24286, average cut-value of max_cut_local_search() : 2901.86
+no. of iterations of GRASP : 70, best cut-value of grasp_max_cut() : 2925
+
+randomized_construction:
+average no. of iterations of local search : 4.025, average cut-value of max_cut_local_search() : 2902.47
+no. of iterations of GRASP : 80, best cut-value of grasp_max_cut() : 2937
+
+randomized_construction:
+average no. of iterations of local search : 4.29, average cut-value of max_cut_local_search() : 2900.8
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 2928
+
+greedy_construction:
+average no. of iterations of local search : 3, average cut-value of max_cut_local_search() : 2949
+no. of iterations of GRASP : 20, best cut-value of grasp_max_cut() : 2949
+
+semi_greedy_construction:
+average no. of iterations of local search : 3.32, average cut-value of max_cut_local_search() : 2936.5
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 2965
+
+
+----------g14------------
+randomized_construction:
+average no. of iterations of local search : 4.06, average cut-value of max_cut_local_search() : 2911.18
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 2946
+
+randomized_construction:
+average no. of iterations of local search : 4.3, average cut-value of max_cut_local_search() : 2914.37
+no. of iterations of GRASP : 60, best cut-value of grasp_max_cut() : 2948
+
+randomized_construction:
+average no. of iterations of local search : 4.28571, average cut-value of max_cut_local_search() : 2912.6
+no. of iterations of GRASP : 70, best cut-value of grasp_max_cut() : 2949
+
+randomized_construction:
+average no. of iterations of local search : 4.025, average cut-value of max_cut_local_search() : 2912.95
+no. of iterations of GRASP : 80, best cut-value of grasp_max_cut() : 2948
+
+randomized_construction:
+average no. of iterations of local search : 4.14, average cut-value of max_cut_local_search() : 2915
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 2955
+
+randomized_construction:
+average no. of iterations of local search : 4.17, average cut-value of max_cut_local_search() : 2912.61
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 2948
+
+greedy_construction:
+average no. of iterations of local search : 3, average cut-value of max_cut_local_search() : 2962
+no. of iterations of GRASP : 20, best cut-value of grasp_max_cut() : 2962
+
+semi_greedy_construction:
+average no. of iterations of local search : 3.28, average cut-value of max_cut_local_search() : 2952.16
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 2971
+
+----------g1------------
+randomized_construction:
+average no. of iterations of local search : 9.42, average cut-value of max_cut_local_search() : 11348.3
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 11430
+
+randomized_construction:
+average no. of iterations of local search : 9.31667, average cut-value of max_cut_local_search() : 11332
+no. of iterations of GRASP : 60, best cut-value of grasp_max_cut() : 11411
+
+randomized_construction:
+average no. of iterations of local search : 9, average cut-value of max_cut_local_search() : 11338.8
+no. of iterations of GRASP : 70, best cut-value of grasp_max_cut() : 11432
+
+randomized_construction:
+average no. of iterations of local search : 8.8625, average cut-value of max_cut_local_search() : 11330.8
+no. of iterations of GRASP : 80, best cut-value of grasp_max_cut() : 11454
+
+randomized_construction:
+average no. of iterations of local search : 9.57, average cut-value of max_cut_local_search() : 11337.5
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 11441
+
+greedy_construction:
+average no. of iterations of local search : 15, average cut-value of max_cut_local_search() : 11397
+no. of iterations of GRASP : 3, best cut-value of grasp_max_cut() : 11397
+
+semi_greedy_construction:
+average no. of iterations of local search : 7.56, average cut-value of max_cut_local_search() : 11371.3
+no. of iterations of GRASP : 25, best cut-value of grasp_max_cut() : 11433
+
+
+----------g43------------
+randomized_construction:
+average no. of iterations of local search : 7.58, average cut-value of max_cut_local_search() : 6376.24
+no. of iterations of GRASP : 50, best cut-value of grasp_max_cut() : 6426
+
+randomized_construction:
+average no. of iterations of local search : 7.5375, average cut-value of max_cut_local_search() : 6382.81
+no. of iterations of GRASP : 80, best cut-value of grasp_max_cut() : 6460
+
+randomized_construction:
+average no. of iterations of local search : 7.96, average cut-value of max_cut_local_search() : 6378.62
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 6444
+
+randomized_construction:
+average no. of iterations of local search : 7.5, average cut-value of max_cut_local_search() : 6378.77
+no. of iterations of GRASP : 100, best cut-value of grasp_max_cut() : 6437
+
+randomized_construction:
+average no. of iterations of local search : 7.7, average cut-value of max_cut_local_search() : 6374.14
+no. of iterations of GRASP : 70, best cut-value of grasp_max_cut() : 6437
+
+greedy_construction:
+average no. of iterations of local search : 8, average cut-value of max_cut_local_search() : 6409
+no. of iterations of GRASP : 3, best cut-value of grasp_max_cut() : 6409
+

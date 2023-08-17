@@ -15,7 +15,7 @@ void printResult(const vector<vector<int>>& graph, const vector<int>& finalParti
 
 ofstream outFile("output.txt", std::ios::app);
 ofstream statsFile("stats.txt", std::ios::app);
-ifstream inFile("inputs/g12.rud");
+ifstream inFile("inputs/g43.rud");
 
 int k = 0;      //total number of iteration of local_search_max_cut() for a given 'max_iter_grasp' in main()
 int cutValue = 0;   //summation of the cut-values of each call to local_search_max_cut() for a given 'max_iter_grasp' in main()
@@ -308,8 +308,8 @@ vector<int> grasp_max_cut(const vector<vector<int>>& graph, int max_iter_grasp) 
         cout << "GRASP iteration no. : " << i << endl;
 
         // vector<int> currentSolution = randomized_construction(graph);
-        vector<int> currentSolution = greedy_construction(graph);
-        // vector<int> currentSolution = semi_greedy_construction(graph);
+        // vector<int> currentSolution = greedy_construction(graph);
+        vector<int> currentSolution = semi_greedy_construction(graph);
 
         vector<int> improvedSolution = local_search_max_cut(graph, currentSolution); // Use local search for improvement
         int currentCutValue = calculateCut(graph, improvedSolution);
@@ -347,7 +347,7 @@ int main(int argc, char* argv[]) {
     vector<int> maxCutPartition = grasp_max_cut(graph, max_iter_grasp);
 
     // Output the results
-    statsFile << "greedy_construction:\n";
+    statsFile << "semi_greedy_construction:\n";
     statsFile << "average no. of iterations of local search : " << (k * 1.0/max_iter_grasp) << ", average cut-value of max_cut_local_search() : " << (cutValue * 1.0/max_iter_grasp) << endl;
     statsFile << "no. of iterations of GRASP : " << max_iter_grasp << ", best cut-value of grasp_max_cut() : " << calculateCut(graph, maxCutPartition) << endl << endl;
 
@@ -367,7 +367,7 @@ void printResult(const vector<vector<int>>& graph, const vector<int>& finalParti
         if(finalPartition[i] == 1) S1.insert(i+1);
     }
 
-    outFile << "greedy_construction:\n";
+    outFile << "semi_greedy_construction:\n";
     outFile << "Max Partition:\n";
     showElements(S0, outFile);
     outFile << endl;
