@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <map>
+#include <unordered_map>
+#include <unordered_set>
 #include <algorithm>
 #include <numeric>
 #include <cstdlib>
@@ -23,6 +24,7 @@ using namespace std;
 // class labels:
 // unacc (0), acc (1), good (2), vgood (3)
 
+int N = 6;  //total number of attributes
 
 // Sample data structure representing a dataset
 struct DataSample {
@@ -34,7 +36,7 @@ struct DataSample {
 struct TreeNode {
     int attributeIndex;
     int label;
-    map<int, TreeNode*> children;
+    unordered_map<int, TreeNode*> children;
 };
 
 // prints all elements of any container in given outputstream
@@ -52,12 +54,12 @@ void showElements(const Container& container, std::ostream& os = std::cout){
     os << "}";
 }
 
-double calculateEntropy(const vector<DataSample>& dataset);
-double calculateInformationGain(const vector<DataSample>& dataset,int attributeIndex,int totalAttributes);
-int findBestAttribute(const vector<DataSample>& dataset, int totalAttributes);
-TreeNode* buildDecisionTree(const vector<DataSample>& dataset,const vector<string>& attributeNames,int totalAttributes);
-int classifySample(const TreeNode* node, const vector<int>& sample);
 DataSample parseCSVRow(const string& row);
+double calculateEntropy(const vector<DataSample>& dataset);
+double calculateInformationGain(const vector<DataSample>& dataset,int attributeIndex);
+TreeNode* buildDecisionTree(const std::vector<DataSample>& dataset, std::unordered_set<int>& usedAttributes);
+int pluralityLabel(const std::vector<DataSample>& dataset);
+int classifySample(const TreeNode* node, const vector<int>& sample);
 
 
 
@@ -76,32 +78,32 @@ int main() {
     }
 
     // Attributes
-    vector<string> attributeNames = {"buying", "maint", "doors", "persons", "lug_boot", "safety"};
-    int totalAttributes = attributeNames.size(), numExperiments = 20;
+    // vector<string> attributeNames = {"buying", "maint", "doors", "persons", "lug_boot", "safety"};
+    int numExperiments = 20;
     vector<double> accuracies;
 
-    for (int experiment = 0; experiment < numExperiments; ++experiment) {
+    for (int i = 0; i < numExperiments; i++) {
         // Shuffle the dataset and split into training and testing sets
         random_shuffle(dataset.begin(), dataset.end());
         size_t trainSize = dataset.size() * 0.8;
-        vector<DataSample> trainingSet(dataset.begin(), dataset.begin() + trainSize);
-        vector<DataSample> testingSet(dataset.begin() + trainSize, dataset.end());
+        vector<DataSample> trainSet(dataset.begin(), dataset.begin() + trainSize);
+        vector<DataSample> testSet(dataset.begin() + trainSize, dataset.end());
 
-        TreeNode* root = buildDecisionTree(trainingSet, attributeNames, totalAttributes);
+        std::unordered_set<int> usedAttributes;
+        TreeNode* root = buildDecisionTree(trainSet, usedAttributes);
 
         // Testing the decision tree on the testing data
         int correctPredictions = 0;
-        for (const auto& sample : testingSet) {
+        for (const DataSample& sample : testSet) {
             int predictedLabel = classifySample(root, sample.features);
             if (predictedLabel == sample.label) {
                 correctPredictions++;
             }
         }
 
-        double accuracy = static_cast<double>(correctPredictions) / testingSet.size() * 100.0;
+        double accuracy = static_cast<double>(correctPredictions) / testSet.size() * 100.0;
+        // cout << "Experiment no. " << i << ", Test Accuracy: " << accuracy << "%" << endl;
         accuracies.push_back(accuracy);
-
-        // TODO: Free memory by deallocating the decision tree nodes
     }
 
     // Calculate and report average accuracy, mean accuracy, and standard deviation
@@ -115,16 +117,18 @@ int main() {
     double variance = squaredDifferencesSum / numExperiments;
     double standardDeviation = sqrt(variance);
 
-    cout << "Average Test Accuracy: " << averageAccuracy << "%" << endl;
-    cout << "Standard Deviation of Accuracy: " << standardDeviation << endl;
+    cout << "\nAverage Test Accuracy: " << averageAccuracy << "%" << endl;
+    cout << "Standard Deviation of Accuracy: " << standardDeviation << endl << endl;
 
     return 0;
 }
 
 // Function to calculate entropy
 double calculateEntropy(const vector<DataSample>& dataset) {
-    map<int, int> labelCounts;
-    for (const auto& sample : dataset) {
+    unordered_map<int, int> labelCounts;
+
+    //counts how many samples are there corresponding to a particular class label
+    for (const DataSample& sample : dataset) {
         labelCounts[sample.label]++;
     }
 
@@ -138,44 +142,25 @@ double calculateEntropy(const vector<DataSample>& dataset) {
 }
 
 // Function to calculate information gain
-double calculateInformationGain(const vector<DataSample>& dataset,
-                                 int attributeIndex,
-                                 int totalAttributes) {
-    map<int, vector<DataSample>> splitData;
+double calculateInformationGain(const vector<DataSample>& dataset, int attributeIndex) {
+    unordered_map<int, vector<DataSample>> splitData;
 
-    for (const auto& sample : dataset) {
+    //example: if attributeIndex==2 [doors], then this loop will trace how many samples have 2 doors, then add those samples to the vector under key '2' in the unordered_map. Similarly, it traces how many samples have 4 doors, then adds them into the vector under the key '4' and so on.
+    for (const DataSample& sample : dataset) {
         splitData[sample.features[attributeIndex]].push_back(sample);
     }
 
     double weightedEntropy = 0.0;
     for (const auto& entry : splitData) {
-        double probability = static_cast<double>(entry.second.size()) / dataset.size();
+        double weight = static_cast<double>(entry.second.size()) / dataset.size();
         double entropy = calculateEntropy(entry.second);
-        weightedEntropy += probability * entropy;
+        weightedEntropy += weight * entropy;
     }
 
     return calculateEntropy(dataset) - weightedEntropy;
 }
 
-// Function to find the best attribute to split on
-int findBestAttribute(const vector<DataSample>& dataset, int totalAttributes) {
-    double maxInformationGain = -1.0;
-    int bestAttribute = -1;
-
-    for (int attributeIndex = 0; attributeIndex < totalAttributes; ++attributeIndex) {
-        double informationGain = calculateInformationGain(dataset, attributeIndex, totalAttributes);
-        if (informationGain > maxInformationGain) {
-            maxInformationGain = informationGain;
-            bestAttribute = attributeIndex;
-        }
-    }
-
-    return bestAttribute;
-}
-
-TreeNode* buildDecisionTree(const vector<DataSample>& dataset,
-                            const vector<string>& attributeNames,
-                            int totalAttributes) {
+TreeNode* buildDecisionTree(const std::vector<DataSample>& dataset, std::unordered_set<int>& usedAttributes) {
     TreeNode* node = new TreeNode();
 
     // Check if all samples have the same label
@@ -193,19 +178,62 @@ TreeNode* buildDecisionTree(const vector<DataSample>& dataset,
         return node;
     }
 
-    int bestAttribute = findBestAttribute(dataset, totalAttributes);
-    node->attributeIndex = bestAttribute;
+    //find the best attr to expand based on the max info gain
+    double maxInformationGain = -1.0;
+    int bestAttribute = -1;
 
-    map<int, vector<DataSample>> splitData;
+    for (int i = 0; i < N; i++) {
+        if (usedAttributes.find(i) == usedAttributes.end()) {
+            double informationGain = calculateInformationGain(dataset, i);
+            if (informationGain > maxInformationGain) {
+                maxInformationGain = informationGain;
+                bestAttribute = i;
+            }
+        }
+    }
+
+    if (bestAttribute == -1) {
+        // No more available attributes to split on
+        // Choose pluralityLabel of remaining examples as the node's label
+        node->label = pluralityLabel(dataset);
+        return node;
+    }
+
+    node->attributeIndex = bestAttribute;
+    usedAttributes.insert(bestAttribute);
+
+    unordered_map<int, vector<DataSample>> splitData;
+    //list of all the samples with that have a particular value of the chosen 'bestAttribute' in the corresponding column
+
     for (const auto& sample : dataset) {
         splitData[sample.features[bestAttribute]].push_back(sample);
     }
 
     for (const auto& entry : splitData) {
-        node->children[entry.first] = buildDecisionTree(entry.second, attributeNames, totalAttributes);
+        node->children[entry.first] = buildDecisionTree(entry.second, usedAttributes);
     }
 
     return node;
+}
+
+// Function to find the majority label in a dataset
+int pluralityLabel(const std::vector<DataSample>& dataset) {
+    std::unordered_map<int, int> labelCounts;
+    for (const auto& sample : dataset) {
+        labelCounts[sample.label]++;
+    }
+
+    int majorityLabel = -1;
+    int maxCount = -1;
+
+    for (const auto& labelCount : labelCounts) {
+        if (labelCount.second > maxCount) {
+            maxCount = labelCount.second;
+            majorityLabel = labelCount.first;
+        }
+    }
+
+    return majorityLabel;
 }
 
 // Function to classify a sample using the decision tree
@@ -218,11 +246,9 @@ int classifySample(const TreeNode* node, const vector<int>& sample) {
     if (node->children.find(attributeValue) != node->children.end()) {
         return classifySample(node->children.at(attributeValue), sample);
     } else {
-        // Handle missing attribute values
-        return -1; // Return a special value for handling missing branches
+        return node->label;
     }
 }
-
 
 DataSample parseCSVRow(const string& row) {
     istringstream ss(row);
