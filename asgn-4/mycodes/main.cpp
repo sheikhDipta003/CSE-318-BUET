@@ -193,7 +193,7 @@ TreeNode* buildDecisionTree(const std::vector<DataSample>& dataset, std::unorder
     }
 
     if (bestAttribute == -1) {
-        // No more available attributes to split on
+        // No more available attributes to split on;
         // Choose pluralityLabel of remaining examples as the node's label
         node->label = pluralityLabel(dataset);
         return node;
@@ -210,7 +210,16 @@ TreeNode* buildDecisionTree(const std::vector<DataSample>& dataset, std::unorder
     }
 
     for (const auto& entry : splitData) {
-        node->children[entry.first] = buildDecisionTree(entry.second, usedAttributes);
+        if (entry.second.empty()) {
+            // If the child node's dataset is empty, create a leaf node
+            // with the label of the most frequent label of its parent node
+            int parentLabel = pluralityLabel(dataset);
+            TreeNode* leafNode = new TreeNode();
+            leafNode->label = parentLabel;
+            node->children[entry.first] = leafNode;
+        } else {
+            node->children[entry.first] = buildDecisionTree(entry.second, usedAttributes);
+        }
     }
 
     return node;
@@ -246,7 +255,7 @@ int classifySample(const TreeNode* node, const vector<int>& sample) {
     if (node->children.find(attributeValue) != node->children.end()) {
         return classifySample(node->children.at(attributeValue), sample);
     } else {
-        return node->label;
+        return -1;
     }
 }
 
